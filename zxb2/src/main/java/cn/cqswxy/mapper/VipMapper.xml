@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cqswxy.mapper.VipMapper">
+	
+	<select id="selectVip" resultType="cn.cqswxy.entity.Vip">
+		SELECT * FROM tb_vip WHERE userAccount = #{userAccount} AND userPwd = #{userPwd}
+	</select>
+	
+	<update id="updateVip">
+		UPDATE tb_vip SET lastLoginTime = NOW();
+	</update>
+	
+</mapper>

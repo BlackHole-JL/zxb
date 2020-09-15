@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cqswxy.mapper.GoodsMapper">
+	
+	<resultMap type="cn.cqswxy.entity.Goods" id="GoodsResultMap">
+		<id property="goodsId" column="goodsId"/>
+		<association property="createType" column="goodsTypeId" select="cn.cqswxy.mapper.TypeMapper.selectById"></association>
+	</resultMap>
+	
+	<insert id="insertOne">
+		INSERT INTO tb_goods VALUES(DEFAULT,#{goodsTitle},#{goodsPrice},#{goodsAddr},#{goodsDate},#{goodsTypeId})
+	</insert>
+	
+	<select id="selectBySome" resultMap="GoodsResultMap">
+		SELECT * FROM tb_goods 
+		<where>
+			<if test="goodsTypeId != null and goodsTypeId != ''">
+				AND goodsTypeId = #{goodsTypeId}
+			</if>
+			<if test="goodsTitle != null and goodsTitle != ''">
+				<bind name="title" value="'%'+goodsTitle+'%'"/>
+				AND goodsTitle LIKE #{title}
+			</if>
+			<if test="minPrice != null and minPrice != ''">
+				AND goodsPrice >= #{minPrice}
+			</if>
+			<if test="maxPrice != null and maxPrice != ''">
+				AND goodsPrice &lt;= #{maxPrice}
+			</if>
+			<if test="minDate != null and minDate != ''">
+				AND goodsDate >= #{minDate}
+			</if>
+			<if test="maxDate != null and maxDate != ''">
+				AND goodsDate &lt;= #{maxDate}
+			</if>
+		</where>
+		 
+	</select>
+	
+	<delete id="delectOne">
+		DELETE FROM tb_goods WHERE goodsId = #{goodsId}
+	</delete>
+	
+</mapper>
